@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>com.exalead.tools</groupId>
+		<artifactId>cv-apps-parent</artifactId>
+		<version>V6R2018x.10</version>
+    </parent>
+	
+	<groupId>com.keyrus.kibaru</groupId>
+	<artifactId>KibaruMashupUISupervisionComponents</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>KibaruMashupUISupervisionComponents</name>
+	<url>http://maven.apache.org</url>
+	<!-- Uncomment this block if not configured in user settings.xml file
+	<profiles>
+		<profile>
+	 		<id>dev</id>	
+	 		<properties>
+	 			<deploy.cloudview.instance>true</deploy.cloudview.instance>
+	 		</properties>
+	 	</profile>
+	 	<profile>
+	 		<id>jenkins</id>
+	 		<properties>
+	 			<deploy.cloudview.instance>false</deploy.cloudview.instance>
+	 		</properties>
+	 	</profile>
+		<profile>
+	 		<id>deploy_mui_classes</id>	
+	 		<properties>
+	 			<deploy.mui.components>${project.artifactId}-classes</deploy.mui.components>
+	 		</properties>
+	 	</profile>
+	 	<profile>
+	 		<id>deploy_mui_widgets</id>
+	 		<properties>
+	 			<deploy.mui.components>${project.artifactId}-widgets</deploy.mui.components>
+	 		</properties>
+	 	</profile>
+	</profiles>
+	 -->
+
+	<properties>	
+		<!-- Properties used in cvplugin.properties -->
+		<cv.plugin.type>mashup</cv.plugin.type>
+		<cv.plugin.description>Custom Mashup UI components (UI triggers, controllers, widgets...)</cv.plugin.description>
+		<cv.plugin.tagsfolder>KibaruMashupUISupervisionComponentsTags</cv.plugin.tagsfolder>
+		<cv.mashup.ui.prefix>KibaruMashupUISupervisionComponents</cv.mashup.ui.prefix>
+		<!-- Generate site index page with components overview -->
+		<maven.cv-components-doc.overview.index>true</maven.cv-components-doc.overview.index>
+	</properties>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>		
+			<!-- Update classpath -->
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+            </plugin>
+
+            <!-- Compile -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <!-- Test -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+
+            <!-- Code style -->
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+
+            <!-- Code validation -->
+            <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+            </plugin>
+
+           <!-- <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+
+			 Javadoc generation - uncomment here and in parent project to generate JavaDoc
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			-->
+			
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>package_classes</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.artifactId}-classes</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/main/assembly/assembly-classes.xml</descriptor>
+							</descriptors>
+							<!-- This assembly can be skipped using profile property -->
+							<skipAssembly>${assembly.ui.classes.skip}</skipAssembly>
+						</configuration>
+					</execution>
+					<execution>
+						<id>package_widgets</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.artifactId}-widgets</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/main/assembly/assembly-widgets.xml</descriptor>
+							</descriptors>
+							<!-- This assembly can be skipped using profile property -->
+							<skipAssembly>${assembly.ui.widgets.skip}</skipAssembly>
+						</configuration>
+					</execution>
+					<execution>
+						<id>package_all</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.artifactId}</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/main/assembly/assembly-dist.xml</descriptor>
+							</descriptors>
+							<!-- This assembly can be skipped using profile property -->
+							<skipAssembly>${assembly.ui.all.skip}</skipAssembly>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.exalead.tools</groupId>
+				<artifactId>CVMavenPlugin</artifactId>
+				<version>${cv.maven.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>generate_descriptor</id>
+						<goals>
+							<goal>CVMashupPluginDescriptorGenerator</goal>
+						</goals>
+						<inherited>true</inherited>
+						<configuration>
+							<widgetPatterns>
+								<widgetPattern>[^.].*</widgetPattern>
+							</widgetPatterns>
+						</configuration>
+					</execution>
+ 					<execution>
+						<id>install_widgets</id>
+						<goals>
+							<goal>CVMashupPluginInstaller</goal>
+						</goals>
+						<inherited>false</inherited>
+						<configuration>
+							<zipName>${project.artifactId}-widgets</zipName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install_mashup_classes</id>
+						<goals>
+							<goal>CVMashupPluginInstaller</goal>
+						</goals>
+						<inherited>false</inherited>
+						<configuration>
+							<zipName>${project.artifactId}-classes</zipName>
+						</configuration>
+					</execution>
+					<!-- <execution>
+						<id>install_all</id>
+						<goals>
+							<goal>CVMashupPluginInstaller</goal>
+						</goals>
+						<inherited>true</inherited>
+						<configuration>
+						</configuration>
+					</execution> -->
+					
+					<execution>
+						<id>force-site-url</id>
+						<goals>
+							<goal>CVDocVersionSetter</goal>
+						</goals>
+						<inherited>true</inherited>
+						<configuration />
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- Release
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin> -->
+		</plugins>
+	</build>
+
+	<dependencies>
+		<!-- Access SDK dependencies -->
+        <dependency>
+            <groupId>${cv.groupid}</groupId>
+            <artifactId>access-sdk</artifactId>
+            <type>pom</type>
+        </dependency>
+        
+   <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.28</version>
+</dependency>
+
+
+        <!-- MUI SDK dependencies -->
+        <dependency>
+            <groupId>${cv.groupid}</groupId>
+            <artifactId>mashup-ui-sdk</artifactId>
+            <type>pom</type>
+        </dependency>
+		
+		<!-- ToolBox -->
+
+		<dependency>
+			<groupId>com.exalead.tools</groupId>
+			<artifactId>CloudViewToolBox</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
+		</dependency>	
+		
+		<dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+	    <version>0.3m</version>
+        </dependency>
+		
+		<dependency>
+    		<groupId>com.jcraft</groupId>
+    		<artifactId>jsch</artifactId>
+    		<version>0.1.55</version>
+		</dependency>
+		
+		<!-- JSON parse library -->
+        <dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20180130</version>
+		</dependency>
+		
+		<!-- CSV parse library -->
+		<dependency>
+		    <groupId>com.opencsv</groupId>
+		    <artifactId>opencsv</artifactId>
+		    <version>5.5.2</version>
+		</dependency>
+		
+		<dependency>
+    <groupId>com.opencsv</groupId>
+    <artifactId>opencsv</artifactId>
+    <version>4.0</version>
+</dependency>
+
+<dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-csv</artifactId>
+    <version>2.9.8</version>
+</dependency>
+
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.8</version>
+</dependency>
+
+<dependency>
+    <groupId>commons-fileupload</groupId>
+    <artifactId>commons-fileupload</artifactId>
+    <version>1.2.2</version>
+</dependency>
+ 
+			
+	</dependencies>
+	
+	<!--  Configure target Maven Repo
+	<distributionManagement>
+		<repository>
+			<id>consulting</id>
+			<name>CloudView Release Repository</name>
+			<url>http://host:port/repository/reponame/</url>
+		</repository>
+	</distributionManagement>
+	 -->
+</project>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<Widget name="Div" group="Layout">
+
+	<Description>You maybe need a div arround a widget to design it...</Description>
+
+	<Preview>
+		<![CDATA[
+			<span style="font-size:30px; color:#DDD;">&lt;div&gt;...&lt;/div&gt;</span>
+		]]>
+	</Preview>
+
+	<SupportWidgetsId arity="ZERO_OR_MANY" />
+	<SupportFeedsId arity="ZERO" consumeFeed="false" />
+</Widget>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<Widget name="KIBARU OGC Common Ressources" group="SONATEL-KIBARU-OGC">
+	<Description>Sonatel Common Ressources</Description>
+
+	<SupportI18N supported="true" />
+	
+	<Platforms>
+		<Platform type="web" supported="true" />
+		<Platform type="mobile" supported="false" />
+	</Platforms>
+
+	<SupportWidgetsId arity="ZERO" />
+	<SupportI18N supported="true" />
+</Widget>

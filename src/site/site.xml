@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <body>
+        <menu name="Overview">
+            <item name="Project overview" href="index.html"/>
+            <item name="Project information" href="project-info.html"/>
+            <item name="Custom components" href="cv-classes-descriptors.html"/>
+            <item name="MEL functions" href="cv-melfunctions-descriptors.html"/>
+            <item name="Spring controllers" href="cv-controllers-descriptors.html"/>
+            <item name="Taglibs" href="cv-taglibs-descriptors.html"/>
+            <item name="Widgets" href="cv-widgets-descriptors.html"/>
+            <item name="Javadoc" href="apidocs/index.html"/>
+        </menu>
+		
+        <!--
+        <menu name="Examples">
+            <item name="description1" href="examples/example-one.html"/>
+            <item name="description2" href="examples/example-two.html"/>
+        </menu>-->
+    </body>
+</project>
